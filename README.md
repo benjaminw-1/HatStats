@@ -1,2 +1,2 @@
 # HatStats
-A V Rising adding stats to hats
+A V Rising mod adding stats to hats
