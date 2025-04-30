@@ -1,0 +1,14 @@
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\Dirthut.csproj.AssemblyReference.cache
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\MyPluginInfo.cs
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\Dirthut.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\Dirthut.AssemblyInfoInputs.cache
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\Dirthut.AssemblyInfo.cs
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\Dirthut.csproj.CoreCompileInputs.cache
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\Dirthut.sourcelink.json
+D:\Project\Vrising\TheGPTExperience\HatStats\bin\Debug\net6.0\HatStats.deps.json
+D:\Project\Vrising\TheGPTExperience\HatStats\bin\Debug\net6.0\HatStats.dll
+D:\Project\Vrising\TheGPTExperience\HatStats\bin\Debug\net6.0\HatStats.pdb
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\HatStats.dll
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\refint\HatStats.dll
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\HatStats.pdb
+D:\Project\Vrising\TheGPTExperience\HatStats\obj\Debug\net6.0\ref\HatStats.dll
