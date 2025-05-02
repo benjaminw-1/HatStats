@@ -1,12 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\bin\\Debug",
-    "\\bin\\Release",
-    "\\obj\\Debug",
-    "\\obj\\Release",
     "\\Systems"
   ],
-  "SelectedNode": "\\Systems\\EquipItemSystem_Patch.cs",
+  "SelectedNode": "\\Plugin.cs",
   "PreviewInSolutionExplorer": false
 }
