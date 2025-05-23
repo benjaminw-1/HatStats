@@ -6,14 +6,15 @@ using Unity.Entities;
 using ProjectM.Shared;
 using Stunlock.Core;
 using System.Collections.Generic;
+using Unity.Rendering;
 
 namespace HatStats;
 
 [HarmonyPatch(typeof(ReactToInventoryChangedSystem), "OnUpdate")]
 public static class ReactToInventory
 {
-    // Track last known helmet state
-    private static Dictionary<Entity, bool> _helmetEquipped = new();
+    // Track the last equipped helmet GUID per entity
+    internal static Dictionary<Entity, PrefabGUID> _lastEquippedHelmet = new();
 
     public static void Prefix(ReactToInventoryChangedSystem __instance)
     {
@@ -38,29 +39,65 @@ public static class ReactToInventory
                 var headItemEntity = equipment.ArmorHeadgearSlot.SlotEntity.GetEntityOnServer();
 
                 bool hasHelmetNow = false;
+                PrefabGUID helmetGuid = default;
+                PrefabGUID buffGuid = default;
 
                 if (headItemEntity != Entity.Null &&
                     entityManager.Exists(headItemEntity) &&
                     entityManager.HasComponent<PrefabGUID>(headItemEntity))
                 {
-                    var guid = entityManager.GetComponentData<PrefabGUID>(headItemEntity);
-                    hasHelmetNow = guid.Equals(HatStatConstants.HelmetPrefabGUID);
+                    helmetGuid = entityManager.GetComponentData<PrefabGUID>(headItemEntity);
+                    hasHelmetNow = HatStatConstants.HelmetBuffMap.TryGetValue(helmetGuid, out buffGuid);
+
+                    if (hasHelmetNow)
+                    {
+                        Plugin.LogInstance.LogInfo($"[HatStats] Equipped helmet {helmetGuid.GuidHash} mapped to buff {buffGuid.GuidHash}");
+                    }
+                    else
+                    {
+                        Plugin.LogInstance.LogInfo($"[HatStats] Helmet {helmetGuid.GuidHash} not found in HelmetBuffMap.");
+                    }
                 }
 
-                _helmetEquipped.TryGetValue(entity, out var hadHelmetBefore);
+                // Fetch previously equipped helmet
+                _lastEquippedHelmet.TryGetValue(entity, out var previousHelmetGuid);
+                bool helmetChanged = !helmetGuid.Equals(previousHelmetGuid);
 
-                if (hasHelmetNow && !hadHelmetBefore)
+                if (helmetChanged)
                 {
-                    Plugin.LogInstance.LogInfo($"[HatStats] Helmet equipped, applying buff to {entity.Index}");
-                    BuffUtility.TryAddBuffViaSystem(entity, entity, HatStatConstants.HelmetStatBuffGUID);
-                }
-                else if (!hasHelmetNow && hadHelmetBefore)
-                {
-                    Plugin.LogInstance.LogInfo($"[HatStats] Helmet removed, removing buff from {entity.Index}");
-                    BuffUtility.TryRemoveBuffViaSystem(entity,entity, HatStatConstants.HelmetStatBuffGUID);
-                }
+                    // Remove old buff if previous helmet was tracked
+                    if (HatStatConstants.HelmetBuffMap.TryGetValue(previousHelmetGuid, out var oldBuffGuid))
+                    {
+                        Plugin.LogInstance.LogInfo($"[HatStats] Helmet changed, removing old buff {oldBuffGuid.GuidHash} from entity {entity.Index}");
+                        BuffUtility.TryRemoveBuffViaSystem(entity, entity, oldBuffGuid);
 
-                _helmetEquipped[entity] = hasHelmetNow;
+                    }
+
+                    // Apply new buff if a new helmet is equipped
+                    if (hasHelmetNow)
+                    {
+                        Plugin.LogInstance.LogInfo($"[HatStats] Applying new buff {buffGuid.GuidHash} for helmet {helmetGuid.GuidHash} to entity {entity.Index}");
+                        BuffUtility.TryAddBuffViaSystem(entity, entity, buffGuid);
+                        _lastEquippedHelmet[entity] = helmetGuid;
+
+                    //    Core.PrefabCollection._PrefabLookupMap.TryGetValue(buffGuid, out Entity test);
+
+                    //    Core.PrefabCollection._PrefabGuidToNameDictionary.TryGetValue(buffGuid, out var name);
+                    ////    Core.Log.LogInfo("===");
+                    //    Core.Log.LogInfo($"{name}");
+                    //    test.LogComponentTypes();
+
+                    //    if (entity.TryGetComponent(out Buff stats)) continue;
+                    //    Core.Log.LogInfo($"[Max stacks] = {stats.MaxStacks}");
+                    //    Core.Log.LogInfo($"[OneInstancePerOwner] = {stats.OneInstancePerOwner}");
+                    //    Core.Log.LogInfo($"[Stacks] = {stats.Stacks}");
+                    //
+                    }
+                    else
+                    {
+                        _lastEquippedHelmet.Remove(entity); // No helmet equipped now
+                    }
+                }
             }
         }
         finally
