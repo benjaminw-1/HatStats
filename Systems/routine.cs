@@ -110,7 +110,9 @@ namespace HatStats.Systems
 
                 }
 
-               
+                FixedString512Bytes msg = $"1";
+                ServerChatUtils.SendSystemMessageToAllClients(Core.EntityManager, ref msg);
+
                 yield return null;
             }
         }

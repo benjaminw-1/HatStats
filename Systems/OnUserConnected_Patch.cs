@@ -10,23 +10,23 @@ using HatStats.Systems;
 
 namespace HatStats;
 
-[HarmonyPatch(typeof(ServerBootstrapSystem), nameof(ServerBootstrapSystem.OnUserConnected))]
+[HarmonyPatch(typeof(ServerBootstrapSystem), nameof(ServerBootstrapSystem.OnCreate))]
 public static class OnUserConnected_Patch
 {
-    public static void Postfix(ServerBootstrapSystem __instance, NetConnectionId netConnectionId)
+    public static void Postfix(ServerBootstrapSystem __instance)
     {
         try
         {
-            var em = __instance.EntityManager;
+            //var em = __instance.EntityManager;
 
-            var userIndex = __instance._NetEndPointToApprovedUserIndex[netConnectionId];
-            var serverClient = __instance._ApprovedUsersLookup[userIndex];
-            var userEntity = serverClient.UserEntity;
+            //var userIndex = __instance._NetEndPointToApprovedUserIndex[netConnectionId];
+            //var serverClient = __instance._ApprovedUsersLookup[userIndex];
+            //var userEntity = serverClient.UserEntity;
 
-            if (!em.Exists(userEntity) || !em.HasComponent<User>(userEntity))
-                return;
+            //if (!em.Exists(userEntity) || !em.HasComponent<User>(userEntity))
+            //    return;
 
-            var userData = em.GetComponentData<User>(userEntity);
+            //var userData = em.GetComponentData<User>(userEntity);
 
             //if (userData.CharacterName.IsEmpty) return;
 
@@ -56,8 +56,7 @@ public static class OnUserConnected_Patch
             {
                 routine.StartCoroutine(routine.test());
             }
-            FixedString512Bytes msg = $"User logged in: Routine started)";
-            ServerChatUtils.SendSystemMessageToAllClients(em, ref msg);
+            Plugin.LogInstance.LogInfo($"The routine has started. Yes Zak, it is only one this time.");
         }
         catch (Exception e)
         {
