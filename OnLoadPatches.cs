@@ -11,6 +11,6 @@ public static class InitializationPatch
 	public static void OneShot_AfterLoad_InitializationPatch()
 	{
 		Core.Initialize();
-		Plugin.Harmony.Unpatch(typeof(SpawnTeamSystem_OnPersistenceLoad).GetMethod("OnUpdate"), typeof(InitializationPatch).GetMethod("OneShot_AfterLoad_InitializationPatch"));
+		Plugin._harmony.Unpatch(typeof(SpawnTeamSystem_OnPersistenceLoad).GetMethod("OnUpdate"), typeof(InitializationPatch).GetMethod("OneShot_AfterLoad_InitializationPatch"));
 	}
 }

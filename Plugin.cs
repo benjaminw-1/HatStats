@@ -10,18 +10,18 @@ using ProjectM.Scripting;
 using ProjectM.Network;
 using ProjectM.Gameplay.Scripting;
 using ProjectM.Gameplay.Systems;
+using HatStats.Systems;
+using Unity.Collections;
 
 
 namespace HatStats;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 [BepInDependency("gg.deca.VampireCommandFramework")]
-[BepInDependency("gg.deca.Bloodstone")]
-[Bloodstone.API.Reloadable]
 public class Plugin : BasePlugin
 {
     
-    Harmony _harmony;
+    internal static Harmony _harmony;
     public static ManualLogSource LogInstance { get; private set; }
 
     public override void Load()
@@ -49,88 +49,15 @@ public class Plugin : BasePlugin
     }
 
 
-    public readonly PrefabGUID random_buff = new(792451792);
-    [Command("testbuff", description: "Example command from testbuff", adminOnly: false)]
+
+
+
+    public readonly PrefabGUID random_buff = new(-1245007017);
+    [Command("testbuff", description: "Example command from testbuff", adminOnly: true)]
     public void ExampleCommand(ChatCommandContext ctx, string someString, int num = 5, float num2 = 1.5f)
     {
-        PrefabGUID bear_buff = random_buff;
-
-
-        ctx.Event.SenderCharacterEntity.TryApplyBuff(bear_buff);
-
-        BuffUtility.TryGetBuff(Core.EntityManager, ctx.Event.SenderCharacterEntity, bear_buff, out var buffEntity);
-
-        if (buffEntity.Has<ModifyUnitStatBuff_DOTS>())
-        {
-            buffEntity.Remove<ModifyUnitStatBuff_DOTS>();
-        }
-
-        var modifyStatBuffer = Core.EntityManager.AddBuffer<ModifyUnitStatBuff_DOTS>(buffEntity);
-
-        modifyStatBuffer.Clear();
-
-        //Core.whatever is not valid, make ur own struct above the function
-        modifyStatBuffer.Add(Core.speed);
-        //modifyStatBuffer.Add(Core.SiegePower);
-
-        //this makes the buff permanent
-        if (buffEntity.Has<LifeTime>())
-        {
-            var lifetime = buffEntity.Read<LifeTime>();
-            lifetime.Duration = -1;
-            lifetime.EndAction = LifeTimeEndAction.None;
-            buffEntity.Write(lifetime);
-        }
-
-        // here im removing all the extra effects of the buff, this is case by case
-        if (buffEntity.Has<RemoveBuffOnGameplayEvent>())
-        {
-            buffEntity.Remove<RemoveBuffOnGameplayEvent>();
-        }
-        if (buffEntity.Has<RemoveBuffOnGameplayEventEntry>())
-        {
-            buffEntity.Remove<RemoveBuffOnGameplayEventEntry>();
-        }
-        if (buffEntity.Has<Script_Modify_Combat_Movement_Buff_Data>())
-        {
-            buffEntity.Remove<Script_Modify_Combat_Movement_Buff_Data>();
-        }
-        if (buffEntity.Has<Script_Modify_Combat_Movement_Buff_State>())
-        {
-            buffEntity.Remove<Script_Modify_Combat_Movement_Buff_State>();
-        }
-        if (buffEntity.Has<DestroyOnGameplayEvent>())
-        {
-            buffEntity.Remove<DestroyOnGameplayEvent>();
-        }
-        if (buffEntity.Has<CreateGameplayEventsOnTick>())
-        {
-            buffEntity.Remove<CreateGameplayEventsOnTick>();
-        }
-        if (buffEntity.Has<ScriptSpawn>())
-        {
-            buffEntity.Remove<ScriptSpawn>();
-        }
-
-        //
-        Core.PrefabCollectionSystem._PrefabGuidToNameDictionary.TryGetValue(bear_buff, out var name);
-        Core.Log.LogInfo("===");
-        Core.Log.LogInfo($"{name}");
-        buffEntity.LogComponentTypes();
-
-
-        if (buffEntity.TryGetBuffer<ModifyUnitStatBuff_DOTS>(out var buff_buffer))
-        {
-            foreach (var buff in buff_buffer)
-            {
-                Core.Log.LogInfo("===");
-                Core.Log.LogInfo($"{buff.Id}");
-                Core.Log.LogInfo($"{buff.StatType}");
-
-            }
-        }
-
-
+        FixedString512Bytes msg = $"Lacho's mod is active";
+        ServerChatUtils.SendSystemMessageToAllClients(Core.EntityManager, ref msg);
     }
 
     public void OnGameInitialized()

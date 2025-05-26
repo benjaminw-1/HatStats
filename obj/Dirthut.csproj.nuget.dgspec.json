@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Project\\Vrising\\Dirthut\\Dirthut.csproj": {}
+    "D:\\Project\\Vrising\\TheGPTExperience\\DebugVersion\\HatStats\\Dirthut.csproj": {}
   },
   "projects": {
-    "D:\\Project\\Vrising\\Dirthut\\Dirthut.csproj": {
+    "D:\\Project\\Vrising\\TheGPTExperience\\DebugVersion\\HatStats\\Dirthut.csproj": {
       "version": "0.1.10",
       "restore": {
-        "projectUniqueName": "D:\\Project\\Vrising\\Dirthut\\Dirthut.csproj",
-        "projectName": "Dirthut",
-        "projectPath": "D:\\Project\\Vrising\\Dirthut\\Dirthut.csproj",
+        "projectUniqueName": "D:\\Project\\Vrising\\TheGPTExperience\\DebugVersion\\HatStats\\Dirthut.csproj",
+        "projectName": "HatStats",
+        "projectPath": "D:\\Project\\Vrising\\TheGPTExperience\\DebugVersion\\HatStats\\Dirthut.csproj",
         "packagesPath": "C:\\Users\\Lachezar\\.nuget\\packages\\",
-        "outputPath": "D:\\Project\\Vrising\\Dirthut\\obj\\",
+        "outputPath": "D:\\Project\\Vrising\\TheGPTExperience\\DebugVersion\\HatStats\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "D:\\Project\\Vrising\\Dirthut\\NuGet.Config",
+          "D:\\Project\\Vrising\\TheGPTExperience\\DebugVersion\\HatStats\\NuGet.Config",
           "C:\\Users\\Lachezar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -56,7 +56,7 @@
             "BepInEx.Core": {
               "include": "Compile",
               "target": "Package",
-              "version": "[6.0.0-be.691, )"
+              "version": "[6.0.0-pre.1, )"
             },
             "BepInEx.PluginInfoProps": {
               "target": "Package",
@@ -65,15 +65,11 @@
             "BepInEx.Unity.IL2CPP": {
               "include": "Compile",
               "target": "Package",
-              "version": "[6.0.0-be.691, )"
-            },
-            "VRising.Bloodstone": {
-              "target": "Package",
-              "version": "[0.2.*, )"
+              "version": "[6.0.0-be.735, )"
             },
             "VRising.Unhollowed.Client": {
               "target": "Package",
-              "version": "[1.0.*, )"
+              "version": "[1.1.8.9179701, )"
             },
             "VRising.VampireCommandFramework": {
               "target": "Package",

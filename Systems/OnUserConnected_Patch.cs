@@ -5,6 +5,8 @@ using Stunlock.Network;
 using Stunlock.Core;
 using Unity.Entities;
 using System;
+using Unity.Collections;
+using HatStats.Systems;
 
 namespace HatStats;
 
@@ -25,33 +27,37 @@ public static class OnUserConnected_Patch
                 return;
 
             var userData = em.GetComponentData<User>(userEntity);
-            
-            if (userData.CharacterName.IsEmpty) return;
 
-            var charEntity = userData.LocalCharacter.GetEntityOnServer();
+            //if (userData.CharacterName.IsEmpty) return;
 
-            if (charEntity == Entity.Null || !em.Exists(charEntity) || !em.HasComponent<Equipment>(charEntity))
-                return;
+            //var charEntity = userData.LocalCharacter.GetEntityOnServer();
 
-            var equipment = em.GetComponentData<Equipment>(charEntity);
-            var helmetEntity = equipment.ArmorHeadgearSlot.SlotEntity.GetEntityOnServer();
+            //if (charEntity == Entity.Null || !em.Exists(charEntity) || !em.HasComponent<Equipment>(charEntity))
+            //    return;
 
-            if (helmetEntity == Entity.Null ||
-                !em.Exists(helmetEntity) ||
-                !em.HasComponent<PrefabGUID>(helmetEntity))
-                return;
+            //var equipment = em.GetComponentData<Equipment>(charEntity);
+            //var helmetEntity = equipment.ArmorHeadgearSlot.SlotEntity.GetEntityOnServer();
 
-            var helmetGuid = em.GetComponentData<PrefabGUID>(helmetEntity);
+            //if (helmetEntity == Entity.Null ||
+            //    !em.Exists(helmetEntity) ||
+            //    !em.HasComponent<PrefabGUID>(helmetEntity))
+            //    return;
 
-            if (HatStatConstants.HelmetBuffMap.TryGetValue(helmetGuid, out var buffGuid))
+            //var helmetGuid = em.GetComponentData<PrefabGUID>(helmetEntity);
+
+            //if (HatStatConstants.HelmetBuffMap.TryGetValue(helmetGuid, out var buffGuid))
+            //{
+
+            //    HatBuffApplication._lastEquippedHelmet[charEntity] = helmetGuid;
+
+            //    
+            //}
+            if (!routine.active)
             {
-                //BuffUtility.TryRemoveBuffViaSystem(userEntity, charEntity, buffGuid);
-
-                BuffUtility.TryAddBuffViaSystem(userEntity, charEntity, buffGuid);
-                ReactToInventory._lastEquippedHelmet[charEntity] = helmetGuid;
-
-                Plugin.LogInstance.LogInfo($"[HatStats] On login: refreshed helmet buff {buffGuid.GuidHash} for character {charEntity.Index}");
+                routine.StartCoroutine(routine.test());
             }
+            FixedString512Bytes msg = $"User logged in: Routine started)";
+            ServerChatUtils.SendSystemMessageToAllClients(em, ref msg);
         }
         catch (Exception e)
         {

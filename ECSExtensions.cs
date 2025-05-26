@@ -145,10 +145,6 @@ internal static class Extensions // probably need to organize this soonTM and at
     {
         return EntityManager.HasComponent(entity, componentType);
     }
-    public static string GetPrefabName(this PrefabGUID prefabGUID)
-    {
-        return PrefabCollectionSystem.PrefabGuidToNameDictionary.TryGetValue(prefabGUID, out string prefabName) ? $"{prefabName} {prefabGUID}" : "String.Empty";
-    }
     public static void Add<T>(this Entity entity)
     {
         EntityManager.AddComponent(entity, new(Il2CppType.Of<T>()));
