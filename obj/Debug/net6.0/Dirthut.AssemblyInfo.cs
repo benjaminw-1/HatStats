@@ -15,8 +15,8 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Description of your mod")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.1.10.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.1.10+1.Branch.main.Sha.c33d0879382e1a0da34861ec55914ba7e637a80e.598975244289362" +
-    "21b4c68f07740f707c05909e7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.1.10+1.Branch.main.Sha.c33d0879382e1a0da34861ec55914ba7e637a80e.b0bbbca1be6781f" +
+    "c2a4cb621ba3c7914079a6854")]
 [assembly: System.Reflection.AssemblyProductAttribute("HatStats")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HatStats")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.1.10.0")]

@@ -42,16 +42,6 @@ public class Plugin : BasePlugin
         return true;
     }
 
-    [Command("test", description: "Example command from hat stats", adminOnly: true)]
-    public void ExampleCommand(ICommandContext ctx, string someString, int num = 5, float num2 = 1.5f)
-    {
-        ctx.Reply($"You passed in {someString} and {num} and {num2}");
-    }
-
-
-
-
-
     public readonly PrefabGUID random_buff = new(-1245007017);
     [Command("testbuff", description: "Example command from testbuff", adminOnly: true)]
     public void ExampleCommand(ChatCommandContext ctx, string someString, int num = 5, float num2 = 1.5f)

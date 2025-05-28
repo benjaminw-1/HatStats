@@ -8,6 +8,7 @@ using ProjectM.Network;
 using HarmonyLib;
 using ProjectM.Physics;
 using ProjectM.Scripting;
+using HatStats.Systems;
 
 
 
@@ -52,54 +53,29 @@ internal static class Core
         DebugEventsSystem = Server.GetExistingSystemManaged<DebugEventsSystem>();
         // GameplayEvents = Server.GetExistingSystemManaged<GameplayEventsSystem>();
 
-
+        if (!routine.active)
+        {
+            routine.StartCoroutine(routine.test());
+            Plugin.LogInstance.LogInfo($"The routine has started. Yes Zak, it is only one this time.");
+        }
         hasInitialized = true;
+
     }
 
-    public static ModifyUnitStatBuff_DOTS speed = new()
-    {
-        StatType = UnitStatType.MovementSpeed,
-        Value = 50,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
-    public static ModifyUnitStatBuff_DOTS phyisical_power = new()
-    {
-        StatType = UnitStatType.PhysicalPower,
-        Value = -9,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
-    public static ModifyUnitStatBuff_DOTS spell_power = new()
-    {
-        StatType = UnitStatType.SpellPower,
-        Value = 10,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
-    public static ModifyUnitStatBuff_DOTS cooldown_reduction = new()
-    {
-        StatType = UnitStatType.CooldownRecoveryRate,
-        Value = 10,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
+
+
     public static ModifyUnitStatBuff_DOTS regeneration = new()
     {
         StatType = UnitStatType.PassiveHealthRegen,
-        Value = 0.05f,
-        ModificationType = ModificationType.Add,
+        Value = 1.5f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS spell_lifeleech = new()
     {
         StatType = UnitStatType.SpellLifeLeech,
-        Value = 50,
+        Value = 30,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -107,7 +83,7 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS fire_resistance = new()
     {
         StatType = UnitStatType.FireResistance,
-        Value = 15,
+        Value = 10,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -115,55 +91,33 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS sun_resistance = new()
     {
         StatType = UnitStatType.SunResistance,
-        Value = 15,
+        Value = 10,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
-    public static ModifyUnitStatBuff_DOTS sun_charge_time = new()
-    {
-        StatType = UnitStatType.SunChargeTime,
-        Value = 20,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
+
     public static ModifyUnitStatBuff_DOTS holy_resistance = new()
     {
         StatType = UnitStatType.HolyResistance,
-        Value = 15,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
-    public static ModifyUnitStatBuff_DOTS attack_speed = new()
-    {
-        StatType = UnitStatType.PrimaryAttackSpeed,
-        Value = 20,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
-    public static ModifyUnitStatBuff_DOTS bonus_physical_power = new()
-    {
-        StatType = UnitStatType.BonusPhysicalPower,
         Value = 10,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
+
     public static ModifyUnitStatBuff_DOTS resource_power = new()
     {
         StatType = UnitStatType.ResourcePower,
-        Value = 10,
-        ModificationType = ModificationType.Add,
+        Value = 1.2f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS garlic_resistance = new()
     {
         StatType = UnitStatType.GarlicResistance,
-        Value = 15,
+        Value = 10,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -171,7 +125,7 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS silver_resistance = new()
     {
         StatType = UnitStatType.SilverResistance,
-        Value = 15,
+        Value = 10,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -180,7 +134,7 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS bonus_shapeshift_movementspeed = new()
     {
         StatType = UnitStatType.BonusShapeshiftMovementSpeed,
-        Value = 20,
+        Value = 4,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -189,8 +143,8 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS max_health_wolfhat = new()
     {
         StatType = UnitStatType.MaxHealth,
-        Value = -110,
-        ModificationType = ModificationType.Add,
+        Value = 0.5f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
@@ -205,8 +159,8 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS resource_yield = new()
     {
         StatType = UnitStatType.ResourceYield,
-        Value = 20,
-        ModificationType = ModificationType.Add,
+        Value = 1.3f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
@@ -214,16 +168,16 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS t2_spell_power = new()
     {
         StatType = UnitStatType.SpellPower,
-        Value = 6,
-        ModificationType = ModificationType.Add,
+        Value = 1.10f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS t2_spell_crit_damage = new()
     {
         StatType = UnitStatType.SpellPower,
-        Value = 10,
-        ModificationType = ModificationType.Add,
+        Value = 1.1f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
@@ -231,23 +185,23 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS t3_spell_power = new()
     {
         StatType = UnitStatType.SpellPower,
-        Value = 3,
-        ModificationType = ModificationType.Add,
+        Value = 1.1f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS t3_spell_crit = new()
     {
         StatType = UnitStatType.SpellCriticalStrikeChance,
-        Value = 8,
-        ModificationType = ModificationType.Add,
+        Value = 1.2f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS t3_physical_power = new()
     {
         StatType = UnitStatType.PhysicalPower,
-        Value = 3,
+        Value = 1.1f,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -255,25 +209,16 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS t3_physical_crit = new()
     {
         StatType = UnitStatType.PhysicalCriticalStrikeChance,
-        Value = 8,
-        ModificationType = ModificationType.Add,
+        Value = 1.2f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS t3_minion_damage = new()
     {
         StatType = UnitStatType.MinionDamage,
-        Value = 10,
-        ModificationType = ModificationType.Add,
-        Modifier = 1,
-        Id = ModificationId.NewId(2)
-    };
-
-    public static ModifyUnitStatBuff_DOTS t3_physical_resistance = new()
-    {
-        StatType = UnitStatType.PhysicalResistance,
-        Value = 2,
-        ModificationType = ModificationType.Add,
+        Value = 1.075f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
@@ -281,7 +226,7 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS t3_damage_against_vblood = new()
     {
         StatType = UnitStatType.DamageVsVBloods,
-        Value = 1,
+        Value = 0.1f,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -290,15 +235,15 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS t3_damage_against_vampires = new()
     {
         StatType = UnitStatType.DamageVsVampires,
-        Value = 1,
-        ModificationType = ModificationType.Add,
+        Value = 0.03f,
+        ModificationType = ModificationType.Multiply,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
     public static ModifyUnitStatBuff_DOTS physical_leech = new()
     {
         StatType = UnitStatType.PhysicalLifeLeech,
-        Value = 50,
+        Value = 15,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -306,7 +251,7 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS damage_reduction = new()
     {
         StatType = UnitStatType.DamageReduction,
-        Value = 4,
+        Value = 2,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
@@ -314,10 +259,128 @@ internal static class Core
     public static ModifyUnitStatBuff_DOTS millitia_physical_debuff = new()
     {
         StatType = UnitStatType.PhysicalPower,
-        Value = -4,
+        Value = 0.8f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+
+
+    public static ModifyUnitStatBuff_DOTS weapon_skill_damage = new()
+    {
+        StatType = UnitStatType.WeaponSkillPower,
+        Value = 1.15f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+
+    public static ModifyUnitStatBuff_DOTS attack_speed= new()
+    {
+        StatType = UnitStatType.PrimaryAttackSpeed,
+        Value = 1.05f,
+        ModificationType = ModificationType.Multiply,
+        AttributeCapType = AttributeCapType.Uncapped,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS t2_physical_power_bonus = new()
+    {
+        StatType = UnitStatType.BonusPhysicalPower,
+        Value = 0.08f,
+        ModificationType = ModificationType.Add,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS t2_physical_power = new()
+    {
+        StatType = UnitStatType.PhysicalPower,
+        Value = 1.25f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS knight_helmet_debuff = new()
+    {
+        StatType = UnitStatType.SpellPower,
+        Value = 0.5f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS knight_helmet_flat_phys = new()
+    {
+        StatType = UnitStatType.PhysicalPower,
+        Value = 2,
         ModificationType = ModificationType.Add,
         Modifier = 1,
         Id = ModificationId.NewId(2)
     };
 
+    public static ModifyUnitStatBuff_DOTS t2_damage_against_vblood = new()
+    {
+        StatType = UnitStatType.DamageVsVBloods,
+        Value = 0.12f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+
+    public static ModifyUnitStatBuff_DOTS t2_damage_against_vampires = new()
+    {
+        StatType = UnitStatType.DamageVsVampires,
+        Value = 0.05f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS bonus_mount_movementspeed = new()
+    {
+        StatType = UnitStatType.BonusMountMovementSpeed,
+        Value = 3f,
+        ModificationType = ModificationType.Add,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS spell_cd_recovery = new()
+    {
+        StatType = UnitStatType.SpellCooldownRecoveryRate,
+        Value = 0.3f,
+        ModificationType = ModificationType.Add,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+
+    public static ModifyUnitStatBuff_DOTS t2_minion_damage = new()
+    {
+        StatType = UnitStatType.MinionDamage,
+        Value = 1.2f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS health_recovery = new()
+    {
+        StatType = UnitStatType.HealthRecovery,
+        Value = 1.05f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS max_health = new()
+    {
+        StatType = UnitStatType.MaxHealth,
+        Value = 1.1f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
+    public static ModifyUnitStatBuff_DOTS weapon_skill_damage_pope_mittre = new()
+    {
+        StatType = UnitStatType.WeaponSkillPower,
+        Value = 1.08f,
+        ModificationType = ModificationType.Multiply,
+        Modifier = 1,
+        Id = ModificationId.NewId(2)
+    };
 }
