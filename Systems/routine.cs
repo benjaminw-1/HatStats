@@ -71,7 +71,7 @@ namespace HatStats.Systems
                         toKill.TryDestroyBuff();
                     }
 
-                        _lastEquippedHelmet.TryGetValue(player, out var previousHelmetGuid);
+                    _lastEquippedHelmet.TryGetValue(player, out var previousHelmetGuid);
                     bool helmetChanged = !currentHelmetGuid.Equals(previousHelmetGuid);
 
 

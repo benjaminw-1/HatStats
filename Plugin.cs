@@ -12,6 +12,8 @@ using ProjectM.Gameplay.Scripting;
 using ProjectM.Gameplay.Systems;
 using HatStats.Systems;
 using Unity.Collections;
+using Unity.Entities;
+
 
 
 namespace HatStats;
@@ -48,6 +50,26 @@ public class Plugin : BasePlugin
     {
         FixedString512Bytes msg = $"Lacho's mod is active";
         ServerChatUtils.SendSystemMessageToAllClients(Core.EntityManager, ref msg);
+    }
+
+
+    [Command("changestat", description: "Change a stat on a helmet - changestat 'name of stat' 'value' ", adminOnly: true)]
+    public void ChangeStat(ChatCommandContext ctx, string stat, float newValue = -1f)
+    {
+        if (newValue < 0)
+            return;
+
+        if (HatStatConstants.StatMap.TryGetValue(stat.ToLower(), out var applyChange))
+        {
+            applyChange(newValue);
+            ctx.Reply($"Updated {stat} to {newValue}");
+            Plugin.LogInstance.LogInfo($"[HatStats] {ctx.Event.SenderUserEntity.Index} changed {stat} to {newValue}");
+            HatStatConstants.initializeBuff();
+        }
+        else
+        {
+            ctx.Reply($"Unknown stat '{stat}'.");
+        }
     }
 
     public void OnGameInitialized()
